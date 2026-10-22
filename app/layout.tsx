@@ -1,84 +1,43 @@
-import { Analytics } from '@vercel/analytics/next'
-import type { Metadata, Viewport } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
-import { SiteHeader } from '@/components/site-header'
-import { SiteFooter } from '@/components/site-footer'
-import { siteConfig } from '@/lib/site'
-import './globals.css'
-
-const geistSans = Geist({ subsets: ['latin'], variable: '--font-geist-sans', display: 'swap' })
-const geistMono = Geist_Mono({ subsets: ['latin'], variable: '--font-geist-mono', display: 'swap' })
+import type { Metadata, Viewport } from "next";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import { SITE_NAME, SITE_URL } from "@/lib/tools";
+import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteConfig.url),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: siteConfig.title,
-    template: `%s | ${siteConfig.name}`,
+    default: "White Screen – Full-Screen White & Colour Screens | WhiteScreen.vip",
+    template: `%s | ${SITE_NAME}`
   },
-  description: siteConfig.description,
-  applicationName: siteConfig.name,
-  generator: 'v0.app',
-  keywords: [
-    'white screen',
-    'fullscreen white screen',
-    'blank white screen',
-    'black screen',
-    'dead pixel test',
-    'screen light',
-    'color screen',
-  ],
+  description:
+    "Turn your display into a bright white screen or any solid colour in one click. Free, fullscreen, and works on any device.",
   openGraph: {
-    type: 'website',
-    siteName: siteConfig.name,
-    title: siteConfig.title,
-    description: siteConfig.description,
-    url: '/',
-    locale: 'en_US',
+    siteName: SITE_NAME,
+    title: "WhiteScreen.vip – Full-Screen White & Colour Screens",
+    description: "Free full-screen white and solid colour screens that run in your browser.",
+    type: "website"
   },
-  twitter: {
-    card: 'summary_large_image',
-    title: siteConfig.title,
-    description: siteConfig.description,
-  },
-  robots: { index: true, follow: true },
-  icons: {
-    icon: [
-      { url: '/icon-light-32x32.png', media: '(prefers-color-scheme: light)' },
-      { url: '/icon-dark-32x32.png', media: '(prefers-color-scheme: dark)' },
-      { url: '/icon.svg', type: 'image/svg+xml' },
-    ],
-    apple: '/apple-icon.png',
-  },
-}
+  robots: { index: true, follow: true }
+};
 
 export const viewport: Viewport = {
-  colorScheme: 'light',
-  themeColor: '#ffffff',
-  width: 'device-width',
-  initialScale: 1,
-}
+  themeColor: "#ffffff",
+  width: "device-width",
+  initialScale: 1
+};
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} bg-background`}>
-      <body className="flex min-h-dvh flex-col antialiased">
-        <a
-          href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-primary focus:px-3 focus:py-2 focus:text-sm focus:text-primary-foreground"
-        >
+    <html lang="en">
+      <body>
+        <a href="#main" className="skip-link">
           Skip to content
         </a>
-        <SiteHeader />
-        <main id="main" className="flex-1">
-          {children}
-        </main>
-        <SiteFooter />
-        {process.env.NODE_ENV === 'production' && <Analytics />}
+        <Header />
+        {children}
+        <Footer />
       </body>
     </html>
-  )
+  );
 }

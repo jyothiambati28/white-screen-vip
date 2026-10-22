@@ -1,53 +1,17 @@
-import type { Metadata } from 'next'
-import { Hero } from '@/components/home/hero'
-import { Benefits } from '@/components/home/benefits'
-import { UseCases } from '@/components/home/use-cases'
-import { HowToUse } from '@/components/home/how-to-use'
-import { Faq } from '@/components/home/faq'
-import { ColorScreenLinks } from '@/components/color-screen-links'
-import { JsonLd } from '@/components/json-ld'
-import { faqs } from '@/lib/home-content'
-import { absoluteUrl, siteConfig } from '@/lib/site'
-
-export const metadata: Metadata = {
-  title: { absolute: siteConfig.title },
-  description: siteConfig.description,
-  alternates: { canonical: '/' },
-}
-
-const webApplicationSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'WebApplication',
-  name: 'White Screen',
-  url: absoluteUrl('/'),
-  description: siteConfig.description,
-  applicationCategory: 'UtilitiesApplication',
-  operatingSystem: 'Any',
-  browserRequirements: 'Requires a modern web browser',
-  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-}
-
-const faqSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: faqs.map((faq) => ({
-    '@type': 'Question',
-    name: faq.question,
-    acceptedAnswer: { '@type': 'Answer', text: faq.answer },
-  })),
-}
+import { ColorScreenTool } from "@/components/color-screen";
+import { OtherColors } from "@/components/other-colors";
+import { HowToUse } from "@/components/how-to-use";
 
 export default function HomePage() {
   return (
-    <>
-      <JsonLd data={webApplicationSchema} />
-      <JsonLd data={faqSchema} />
-      <Hero />
-      <Benefits />
-      <UseCases />
+    <main id="main" className="container page">
+      <header className="page-intro">
+        <h1>White Screen</h1>
+        <p>Turn your display into a clean, bright white screen in one click — or switch to any other colour.</p>
+      </header>
+      <ColorScreenTool initialColor="#ffffff" />
       <HowToUse />
-      <ColorScreenLinks currentId="white" />
-      <Faq />
-    </>
-  )
+      <OtherColors currentSlug="white-screen" heading="More colour screens" />
+    </main>
+  );
 }
